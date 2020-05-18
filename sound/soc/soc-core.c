@@ -1175,7 +1175,8 @@ static int soc_probe_component(struct snd_soc_card *card,
 		return 0;
 
 	if (component->card) {
-		if (component->card != card) {
+		if (component->card != card &&
+		    component->registered_as_component) {
 			dev_err(component->dev,
 				"Trying to bind component to card \"%s\" but is already bound to card \"%s\"\n",
 				card->name, component->card->name);
@@ -2476,6 +2477,8 @@ int snd_soc_add_component(struct snd_soc_component *component,
 
 	mutex_lock(&client_mutex);
 
+	component->registered_as_component = num_dai == 1;
+
 	if (component->driver->endianness) {
 		for (i = 0; i < num_dai; i++) {
 			convert_endianness_formats(&dai_drv[i].playback);
@@ -2551,7 +2554,7 @@ void snd_soc_unregister_component_by_driver(struct device *dev,
 
 	mutex_lock(&client_mutex);
 	component = snd_soc_lookup_component_nolocked(dev, component_driver->name);
-	if (!component)
+	if (!component || !component->registered_as_component)
 		goto out;
 
 	snd_soc_del_component_unlocked(component);
@@ -2574,7 +2577,7 @@ void snd_soc_unregister_component(struct device *dev)
 	mutex_lock(&client_mutex);
 	while (1) {
 		component = snd_soc_lookup_component_nolocked(dev, NULL);
-		if (!component)
+		if (!component || !component->registered_as_component)
 			break;
 
 		snd_soc_del_component_unlocked(component);
