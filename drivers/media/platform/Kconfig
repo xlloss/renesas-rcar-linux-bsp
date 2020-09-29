@@ -452,7 +452,7 @@ config VIDEO_RENESAS_IMR
 	depends on VIDEO_DEV && VIDEO_V4L2
 	select VIDEOBUF2_DMA_CONTIG
 	select V4L2_MEM2MEM_DEV
-	---help---
+	help
 	  This is a V4L2 driver for the Renesas IMR-X2/LX2/LX4 Processing Unit.
 
 	  To compile this driver as a module, choose M here: the module
