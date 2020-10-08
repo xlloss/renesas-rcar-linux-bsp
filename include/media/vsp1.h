@@ -67,6 +67,11 @@ struct vsp1_du_atomic_config {
 	u32 pixelformat;
 	unsigned int pitch;
 	dma_addr_t mem[3];
+	dma_addr_t alpha_mem;
+	unsigned int alpha_pitch;
+	unsigned int ckey;
+	unsigned int ckey_set0;
+	unsigned int ckey_set1;
 	struct v4l2_rect src;
 	struct v4l2_rect dst;
 	unsigned int alpha;
@@ -74,6 +79,7 @@ struct vsp1_du_atomic_config {
 	u32 colorkey;
 	u32 colorkey_alpha;
 	bool colorkey_en;
+	unsigned int blend;
 };
 
 /**

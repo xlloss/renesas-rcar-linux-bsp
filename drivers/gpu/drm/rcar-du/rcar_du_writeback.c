@@ -60,7 +60,7 @@ static int rcar_du_wb_prepare_job(struct drm_writeback_connector *connector,
 		return -ENOMEM;
 
 	/* Map the framebuffer to the VSP. */
-	ret = rcar_du_vsp_map_fb(rcrtc->vsp, job->fb, rjob->sg_tables);
+	ret = rcar_du_vsp_map_fb(rcrtc->vsp, job->fb, rjob->sg_tables, NULL);
 	if (ret < 0) {
 		kfree(rjob);
 		return ret;
@@ -79,7 +79,7 @@ static void rcar_du_wb_cleanup_job(struct drm_writeback_connector *connector,
 	if (!job->fb)
 		return;
 
-	rcar_du_vsp_unmap_fb(rcrtc->vsp, job->fb, rjob->sg_tables);
+	rcar_du_vsp_unmap_fb(rcrtc->vsp, job->fb, rjob->sg_tables, NULL);
 	kfree(rjob);
 }
 
