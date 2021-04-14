@@ -52,6 +52,9 @@ Accelerometers:
 - st,lis2de12
 - st,lis2hh12
 
+IMU:
+- st,lsm9ds0-imu
+
 Gyroscopes:
 - st,l3g4200d-gyro
 - st,lsm330d-gyro
