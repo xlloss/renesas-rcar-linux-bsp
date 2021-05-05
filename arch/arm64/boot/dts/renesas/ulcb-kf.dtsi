@@ -140,10 +140,6 @@
 		baud_rate = <3333332>;
 	};
 
-	btwilink {
-		compatible = "btwilink";
-	};
-
 	/delete-node/sound;
 
 	sound_card: sound@0 {
@@ -331,6 +327,11 @@
 	uart-has-rtscts;
 
 	status = "okay";
+
+	bluetooth {
+		compatible = "ti,wl1837-st";
+		enable-gpios = <&gpio_exp_74 3 GPIO_ACTIVE_HIGH>;
+	};
 };
 
 &hscif1 {
