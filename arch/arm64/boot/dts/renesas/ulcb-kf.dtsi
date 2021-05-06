@@ -480,12 +480,12 @@
 			};
 
 			lsm9ds0_acc_mag@1d {
-				compatible = "st,lsm9ds0";
+				compatible = "st,lsm9ds0-imu";
 				reg = <0x1d>;
 			};
 
 			lsm9ds0_gyr@6b {
-				compatible = "st,lsm9ds0";
+				compatible = "st,lsm9ds0-gyro";
 				reg = <0x6b>;
 			};
 
