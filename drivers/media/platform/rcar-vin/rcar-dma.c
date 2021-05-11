@@ -754,7 +754,7 @@ static void rvin_crop_scale_comp(struct rvin_dev *vin)
 		break;
 	}
 
-	rvin_write(vin, vin->format.width, VNIS_REG);
+	rvin_write(vin, stride, VNIS_REG);
 }
 
 /* -----------------------------------------------------------------------------
