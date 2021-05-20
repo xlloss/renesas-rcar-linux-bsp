@@ -2089,7 +2089,7 @@
 		};
 
 		rpc0: rpc0@ee200000 {
-			compatible = "renesas,rpc-r8a77951", "renesas,rpc";
+			compatible = "renesas,r8a77951-rpc-if", "renesas,rcar-gen3-rpc-if";
 			reg = <0 0xee200000 0 0x1f0>,
 			      <0 0x08000000 0 0x04000000>,
 			      <0 0xee208000 0 0x100>;
