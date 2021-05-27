@@ -221,7 +221,7 @@
 		clock-output-names = "mclk";
 	};
 
-	ov5647_camera_clk: camera_clk {
+	ov5647_camera_clk: ov5647_camera_clk {
 		compatible = "fixed-clock";
 		#clock-cells = <0>;
 		clock-frequency = <25000000>;
