@@ -87,6 +87,12 @@ dtb-$(CONFIG_ARCH_R8A77980) += r8a77980-v3hsk-vb-gmsl2-8.dtb
 dtb-$(CONFIG_ARCH_R8A77980) += r8a77980-es2-condor.dtb
 dtb-$(CONFIG_ARCH_R8A77980) += r8a77980-es2-v3hsk.dtb
 
+dtb-$(CONFIG_ARCH_R8A77980) += r8a77980-es2-v3hsk-vb-4ch.dtb
+dtb-$(CONFIG_ARCH_R8A77980) += r8a77980-es2-v3hsk-vb-8ch.dtb
+dtb-$(CONFIG_ARCH_R8A77980) += r8a77980-es2-v3hsk-vb-gmsl-8ch.dtb
+dtb-$(CONFIG_ARCH_R8A77980) += r8a77980-es2-v3hsk-vb-gmsl2-4.dtb
+dtb-$(CONFIG_ARCH_R8A77980) += r8a77980-es2-v3hsk-vb-gmsl2-8.dtb
+
 # overlays
 DTC_FLAGS += -@
 ulcb-kf-dtbo := ulcb-kf-cn11.dtbo ulcb-kf-most.dtbo ulcb-kf-sd3.dtbo \
