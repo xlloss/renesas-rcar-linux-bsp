@@ -747,8 +747,11 @@ static void rvin_crop_scale_comp(struct rvin_dev *vin)
 	case V4L2_PIX_FMT_SGBRG8:
 	case V4L2_PIX_FMT_SGRBG8:
 	case V4L2_PIX_FMT_SRGGB8:
-	case V4L2_PIX_FMT_GREY:
 		stride /= 2;
+		break;
+	case V4L2_PIX_FMT_GREY:
+		if (vin->mbus_code == MEDIA_BUS_FMT_Y8_1X8)
+			stride /= 2;
 		break;
 	default:
 		break;
