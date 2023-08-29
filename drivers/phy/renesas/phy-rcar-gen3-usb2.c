@@ -201,7 +201,8 @@ static void rcar_gen3_init_for_host(struct rcar_gen3_chan *ch)
 	rcar_gen3_enable_vbus_ctrl(ch, 1);
 
 	ch->extcon_host = true;
-	schedule_work(&ch->work);
+	if (ch->extcon)
+		schedule_work(&ch->work);
 }
 
 static void rcar_gen3_init_for_peri(struct rcar_gen3_chan *ch)
@@ -211,7 +212,8 @@ static void rcar_gen3_init_for_peri(struct rcar_gen3_chan *ch)
 	rcar_gen3_enable_vbus_ctrl(ch, 0);
 
 	ch->extcon_host = false;
-	schedule_work(&ch->work);
+	if (ch->extcon)
+		schedule_work(&ch->work);
 }
 
 static void rcar_gen3_init_for_b_host(struct rcar_gen3_chan *ch)
@@ -378,7 +380,7 @@ static void rcar_gen3_init_otg(struct rcar_gen3_chan *ch)
 
 	val = readl(usb2_base + USB2_VBCTRL);
 	val &= ~USB2_VBCTRL_OCCLREN;
-	writel(val | USB2_VBCTRL_DRVVBUSSEL, usb2_base + USB2_VBCTRL);
+	writel(val /*| USB2_VBCTRL_DRVVBUSSEL*/, usb2_base + USB2_VBCTRL);
 	val = readl(usb2_base + USB2_ADPCTRL);
 	writel(val | USB2_ADPCTRL_IDPULLUP, usb2_base + USB2_ADPCTRL);
 
@@ -431,13 +433,17 @@ static int rcar_gen3_phy_usb2_init(struct phy *p)
 	writel(val, usb2_base + USB2_INT_ENABLE);
 	writel(USB2_SPD_RSM_TIMSET_INIT, usb2_base + USB2_SPD_RSM_TIMSET);
 	writel(USB2_OC_TIMSET_INIT, usb2_base + USB2_OC_TIMSET);
+	val = readl(usb2_base + USB2_VBCTRL);
+	val |= USB2_VBCTRL_DRVVBUSSEL;
+	writel(val, usb2_base + USB2_VBCTRL);
 
 	/* Initialize otg part */
 	if (channel->is_otg_channel) {
 		if (rcar_gen3_needs_init_otg(channel))
 			rcar_gen3_init_otg(channel);
 		rphy->otg_initialized = true;
-	}
+	} else
+		rcar_gen3_init_for_host(channel);
 
 	rphy->initialized = true;
 

@@ -52,11 +52,16 @@ struct rcar_du_vsp_plane_state {
 	struct drm_plane_state state;
 
 	const struct rcar_du_format_info *format;
-	struct sg_table sg_tables[3];
+	struct sg_table sg_tables[4];
 
 	unsigned int alpha;
 	u32 colorkey;
 	u32 colorkey_alpha;
+	struct drm_framebuffer *alphaplane;
+	unsigned int blend;
+	unsigned int ckey;
+	unsigned int ckey_set0;
+	unsigned int ckey_set1;
 };
 
 static inline struct rcar_du_vsp_plane_state *
@@ -77,9 +82,9 @@ int rcar_du_set_vmute(struct drm_device *dev, void *data,
 int rcar_du_vsp_write_back(struct drm_device *dev, void *data,
 			   struct drm_file *file_priv);
 int rcar_du_vsp_map_fb(struct rcar_du_vsp *vsp, struct drm_framebuffer *fb,
-		       struct sg_table sg_tables[3]);
+		       struct sg_table sg_tables[3], struct rcar_du_vsp_plane_state *rstate);
 void rcar_du_vsp_unmap_fb(struct rcar_du_vsp *vsp, struct drm_framebuffer *fb,
-			  struct sg_table sg_tables[3]);
+			  struct sg_table sg_tables[3], struct rcar_du_vsp_plane_state *rstate);
 #else
 static inline int rcar_du_vsp_init(struct rcar_du_vsp *vsp,
 				   struct device_node *np,
@@ -100,13 +105,15 @@ static inline int rcar_du_vsp_write_back(struct drm_device *dev, void *data,
 };
 static inline int rcar_du_vsp_map_fb(struct rcar_du_vsp *vsp,
 				     struct drm_framebuffer *fb,
-				     struct sg_table sg_tables[3])
+				     struct sg_table sg_tables[3],
+				     struct rcar_du_vsp_plane_state *rstate)
 {
 	return -ENXIO;
 }
 static inline void rcar_du_vsp_unmap_fb(struct rcar_du_vsp *vsp,
 					struct drm_framebuffer *fb,
-					struct sg_table sg_tables[3])
+					struct sg_table sg_tables[3],
+					struct rcar_du_vsp_plane_state *rstate)
 {
 }
 #endif

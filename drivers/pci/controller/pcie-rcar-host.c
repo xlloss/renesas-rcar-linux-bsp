@@ -976,26 +976,23 @@ static int rcar_pcie_probe(struct platform_device *pdev)
 
 	host->pcie3v3 = devm_regulator_get_optional(dev, "pcie3v3");
 	if (IS_ERR(host->pcie3v3)) {
-		if (PTR_ERR(host->pcie3v3) == -EPROBE_DEFER) {
-			pci_free_host_bridge(bridge);
+		if (PTR_ERR(host->pcie3v3) == -EPROBE_DEFER)
 			return -EPROBE_DEFER;
-		}
+
 		dev_info(dev, "no pcie3v3 regulator found\n");
 	}
 
 	host->pcie1v8 = devm_regulator_get_optional(dev, "pcie1v8");
 	if (IS_ERR(host->pcie1v8)) {
-		if (PTR_ERR(host->pcie1v8) == -EPROBE_DEFER) {
-			pci_free_host_bridge(bridge);
+		if (PTR_ERR(host->pcie1v8) == -EPROBE_DEFER)
 			return -EPROBE_DEFER;
-		}
+
 		dev_info(dev, "no pcie1v8 regulator found\n");
 	}
 
 	err = rcar_pcie_set_vpcie(host);
 	if (err) {
 		dev_err(dev, "failed to set pcie regulators\n");
-		pci_free_host_bridge(bridge);
 		return err;
 	}
 

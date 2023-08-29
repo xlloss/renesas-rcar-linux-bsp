@@ -2088,6 +2088,19 @@
 			status = "disabled";
 		};
 
+		rpc0: rpc0@ee200000 {
+			compatible = "renesas,r8a77951-rpc-if", "renesas,rcar-gen3-rpc-if";
+			reg = <0 0xee200000 0 0x1f0>,
+			      <0 0x08000000 0 0x04000000>,
+			      <0 0xee208000 0 0x100>;
+			interrupts = <GIC_SPI 38 IRQ_TYPE_LEVEL_HIGH>;
+			clocks = <&cpg CPG_MOD 917>;
+			power-domains = <&sysc R8A7795_PD_ALWAYS_ON>;
+			#address-cells = <1>;
+			#size-cells = <0>;
+			status = "disabled";
+		};
+
 		vin0: video@e6ef0000 {
 			compatible = "renesas,vin-r8a7795";
 			reg = <0 0xe6ef0000 0 0x1000>;
@@ -3343,6 +3356,10 @@
 			status = "disabled";
 		};
 
+		imr_v4l2_alloc: imr_alloc {
+			dma-coherent;
+		};
+
 		imr-lx4@fe860000 {
 			compatible = "renesas,r8a7795-imr-lx4",
 				     "renesas,imr-lx4";
@@ -3351,6 +3368,7 @@
 			clocks = <&cpg CPG_MOD 823>;
 			power-domains = <&sysc R8A7795_PD_A3VC>;
 			resets = <&cpg 823>;
+			alloc-dev = <&imr_v4l2_alloc>;
 		};
 
 		imr-lx4@fe870000 {
@@ -3361,6 +3379,7 @@
 			clocks = <&cpg CPG_MOD 822>;
 			power-domains = <&sysc R8A7795_PD_A3VC>;
 			resets = <&cpg 822>;
+			alloc-dev = <&imr_v4l2_alloc>;
 		};
 
 		imr-lx4@fe880000 {
@@ -3371,6 +3390,7 @@
 			clocks = <&cpg CPG_MOD 821>;
 			power-domains = <&sysc R8A7795_PD_A3VC>;
 			resets = <&cpg 821>;
+			alloc-dev = <&imr_v4l2_alloc>;
 		};
 
 		imr-lx4@fe890000 {
@@ -3381,6 +3401,7 @@
 			clocks = <&cpg CPG_MOD 820>;
 			power-domains = <&sysc R8A7795_PD_A3VC>;
 			resets = <&cpg 820>;
+			alloc-dev = <&imr_v4l2_alloc>;
 		};
 
 		fcpcs: vcp4@fe90f000 {

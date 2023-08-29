@@ -148,12 +148,12 @@ struct imx219_mode {
 /*
  * Register sets lifted off the i2C interface from the Raspberry Pi firmware
  * driver.
- * 3280x2464 = mode 2, 1920x1080 = mode 1, 1640x1232 = mode 4, 640x480 = mode 7.
+ * 3264x2464 = mode 2, 1920x1080 = mode 1, 1640x1232 = mode 4, 640x480 = mode 7.
  */
-static const struct imx219_reg mode_3280x2464_regs[] = {
+static const struct imx219_reg mode_3264x2464_regs[] = {
 	{0x0100, 0x00},
-	{0x30eb, 0x0c},
 	{0x30eb, 0x05},
+	{0x30eb, 0x0c},
 	{0x300a, 0xff},
 	{0x300b, 0xff},
 	{0x30eb, 0x05},
@@ -163,15 +163,15 @@ static const struct imx219_reg mode_3280x2464_regs[] = {
 	{0x012a, 0x18},
 	{0x012b, 0x00},
 	{0x0164, 0x00},
-	{0x0165, 0x00},
+	{0x0165, 0x10},
 	{0x0166, 0x0c},
-	{0x0167, 0xcf},
+	{0x0167, 0xbf},
 	{0x0168, 0x00},
 	{0x0169, 0x00},
 	{0x016a, 0x09},
 	{0x016b, 0x9f},
 	{0x016c, 0x0c},
-	{0x016d, 0xd0},
+	{0x016d, 0xc0},
 	{0x016e, 0x09},
 	{0x016f, 0xa0},
 	{0x0170, 0x01},
@@ -188,7 +188,7 @@ static const struct imx219_reg mode_3280x2464_regs[] = {
 	{0x030c, 0x00},
 	{0x030d, 0x72},
 	{0x0624, 0x0c},
-	{0x0625, 0xd0},
+	{0x0625, 0xc0},
 	{0x0626, 0x09},
 	{0x0627, 0xa0},
 	{0x455e, 0x00},
@@ -470,18 +470,18 @@ static const u32 codes[] = {
 static const struct imx219_mode supported_modes[] = {
 	{
 		/* 8MPix 15fps mode */
-		.width = 3280,
+		.width = 3264,
 		.height = 2464,
 		.crop = {
-			.left = IMX219_PIXEL_ARRAY_LEFT,
+			.left = 16,
 			.top = IMX219_PIXEL_ARRAY_TOP,
-			.width = 3280,
+			.width = 3264,
 			.height = 2464
 		},
 		.vts_def = IMX219_VTS_15FPS,
 		.reg_list = {
-			.num_of_regs = ARRAY_SIZE(mode_3280x2464_regs),
-			.regs = mode_3280x2464_regs,
+			.num_of_regs = ARRAY_SIZE(mode_3264x2464_regs),
+			.regs = mode_3264x2464_regs,
 		},
 	},
 	{
@@ -670,7 +670,7 @@ static void imx219_set_default_format(struct imx219 *imx219)
 	struct v4l2_mbus_framefmt *fmt;
 
 	fmt = &imx219->fmt;
-	fmt->code = MEDIA_BUS_FMT_SRGGB10_1X10;
+	fmt->code = MEDIA_BUS_FMT_SBGGR8_1X8;
 	fmt->colorspace = V4L2_COLORSPACE_SRGB;
 	fmt->ycbcr_enc = V4L2_MAP_YCBCR_ENC_DEFAULT(fmt->colorspace);
 	fmt->quantization = V4L2_MAP_QUANTIZATION_DEFAULT(true,
@@ -1321,12 +1321,12 @@ static int imx219_init_controls(struct imx219 *imx219)
 			  IMX219_DGTL_GAIN_STEP, IMX219_DGTL_GAIN_DEFAULT);
 
 	imx219->hflip = v4l2_ctrl_new_std(ctrl_hdlr, &imx219_ctrl_ops,
-					  V4L2_CID_HFLIP, 0, 1, 1, 0);
+					  V4L2_CID_HFLIP, 0, 1, 1, 1);
 	if (imx219->hflip)
 		imx219->hflip->flags |= V4L2_CTRL_FLAG_MODIFY_LAYOUT;
 
 	imx219->vflip = v4l2_ctrl_new_std(ctrl_hdlr, &imx219_ctrl_ops,
-					  V4L2_CID_VFLIP, 0, 1, 1, 0);
+					  V4L2_CID_VFLIP, 0, 1, 1, 1);
 	if (imx219->vflip)
 		imx219->vflip->flags |= V4L2_CTRL_FLAG_MODIFY_LAYOUT;
 
@@ -1510,6 +1510,7 @@ static int imx219_probe(struct i2c_client *client)
 	imx219->sd.internal_ops = &imx219_internal_ops;
 	imx219->sd.flags |= V4L2_SUBDEV_FL_HAS_DEVNODE;
 	imx219->sd.entity.function = MEDIA_ENT_F_CAM_SENSOR;
+	imx219->sd.fwnode = fwnode_graph_get_next_endpoint(dev_fwnode(dev), NULL);
 
 	/* Initialize source pad */
 	imx219->pad.flags = MEDIA_PAD_FL_SOURCE;

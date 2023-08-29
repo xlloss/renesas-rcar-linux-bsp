@@ -1,0 +1,3 @@
+!_TAG_FILE_SORTED	2	/0=unsorted, 1=sorted, 2=foldcase/
+msp3400-objs	/home/slash/work/for_regulus/RCar/rcar-gen3/V590/kernel-source/drivers/media/i2c/Makefile	/^msp3400-objs	:=	msp3400-driver.o msp3400-kthreads.o$/;"	m	language:Make
+rdacm20-camera_module-objs	/home/slash/work/for_regulus/RCar/rcar-gen3/V590/kernel-source/drivers/media/i2c/Makefile	/^rdacm20-camera_module-objs	:= rdacm20.o max9271.o$/;"	m	language:Make
