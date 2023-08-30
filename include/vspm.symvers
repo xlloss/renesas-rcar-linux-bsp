@@ -1,0 +1,5 @@
+0x00000000	vspm_get_status	/home/cadtc/host_share_folder/Yocto/RCar_SKKF/BSP_YOCTO_V590/m3ulcb/build/tmp/work/m3ulcb-poky-linux/kernel-module-vspm/1.0-r0/git/vspm-module/files/vspm/drv/vspm	EXPORT_SYMBOL	
+0x00000000	vspm_quit_driver	/home/cadtc/host_share_folder/Yocto/RCar_SKKF/BSP_YOCTO_V590/m3ulcb/build/tmp/work/m3ulcb-poky-linux/kernel-module-vspm/1.0-r0/git/vspm-module/files/vspm/drv/vspm	EXPORT_SYMBOL	
+0x00000000	vspm_cancel_job	/home/cadtc/host_share_folder/Yocto/RCar_SKKF/BSP_YOCTO_V590/m3ulcb/build/tmp/work/m3ulcb-poky-linux/kernel-module-vspm/1.0-r0/git/vspm-module/files/vspm/drv/vspm	EXPORT_SYMBOL	
+0x00000000	vspm_entry_job	/home/cadtc/host_share_folder/Yocto/RCar_SKKF/BSP_YOCTO_V590/m3ulcb/build/tmp/work/m3ulcb-poky-linux/kernel-module-vspm/1.0-r0/git/vspm-module/files/vspm/drv/vspm	EXPORT_SYMBOL	
+0x00000000	vspm_init_driver	/home/cadtc/host_share_folder/Yocto/RCar_SKKF/BSP_YOCTO_V590/m3ulcb/build/tmp/work/m3ulcb-poky-linux/kernel-module-vspm/1.0-r0/git/vspm-module/files/vspm/drv/vspm	EXPORT_SYMBOL	
