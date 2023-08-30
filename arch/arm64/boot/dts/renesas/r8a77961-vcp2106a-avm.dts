@@ -281,14 +281,26 @@
 	status = "okay";
 };
 
+#define NPXL_720P_60 0
+#define NPXL_720P_50 1
+#define NPXL_720P_30 2
+#define NPXL_720P_25 3
+#define NPXL_1080P_30 4
+#define NPXL_1080P_25 5
+#define NPXL_480I 6
+#define NPXL_576I 7
+
 &i2c0 {
 	status = "okay";
 
+	/* tp28 device chip 0 */
 	tvi_deser@44 {
 		#address-cells = <1>;
 		#size-cells = <0>;
-		compatible = "tvi,tp2854b";
+		compatible = "tvi,tp2855";
 		reg = <0x44>;
+		npxl = <NPXL_1080P_25>;
+		lanes = <4>;
 
 		ports {
 			#address-cells = <1>;
@@ -296,35 +308,35 @@
 
 			port@0 {
 				reg = <0>;
-				deser_in0: endpoint {
-					remote-endpoint = <&camera_out0>;
+				tvi0_deser_in0: endpoint {
+					remote-endpoint = <&camera_out00>;
 				};
 			};
 
 			port@1 {
 				reg = <1>;
-				deser_in1: endpoint {
-					remote-endpoint = <&camera_out1>;
+				tvi0_deser_in1: endpoint {
+					remote-endpoint = <&camera_out01>;
 				};
 			};
 
 			port@2 {
 				reg = <2>;
-				deser_in2: endpoint {
-					remote-endpoint = <&camera_out2>;
+				tvi0_deser_in2: endpoint {
+					remote-endpoint = <&camera_out02>;
 				};
 			};
 
 			port@3 {
 				reg = <3>;
-				deser_in3: endpoint {
-					remote-endpoint = <&camera_out3>;
+				tvi0_deser_in3: endpoint {
+					remote-endpoint = <&camera_out03>;
 				};
 			};
 
 			port@4 {
 				reg = <4>;
-				deser_out0: endpoint {
+				tvi0_deser_out0: endpoint {
 					clock-lanes = <0>;
 					data-lanes = <1 2 3 4>;
 					remote-endpoint = <&csi40_in>;
@@ -338,12 +350,16 @@
 			reg = <0>;
 
 			camera@40 {
-				//compatible = "tvi_cam";
-				compatible = "ahd_cam";
+				compatible = "tvi_cam";
 				reg = <0x40>;
-				port {
-					camera_out0: endpoint {
-						remote-endpoint = <&deser_in0>;
+				ports {
+					#address-cells = <1>;
+					#size-cells = <0>;
+					port@0 {
+						reg = <0>;
+						camera_out00: endpoint {
+							remote-endpoint = <&tvi0_deser_in0>;
+						};
 					};
 				};
 			};
@@ -355,12 +371,15 @@
 			reg = <1>;
 
 			camera@41 {
-				//compatible = "tvi_cam";
-				compatible = "ahd_cam";
+				compatible = "tvi_cam";
 				reg = <0x41>;
-				port {
-					camera_out1: endpoint {
-						remote-endpoint = <&deser_in1>;
+				ports {
+					#address-cells = <1>;
+					#size-cells = <0>;
+					port@0 {
+						camera_out01: endpoint {
+							remote-endpoint = <&tvi0_deser_in1>;
+						};
 					};
 				};
 			};
@@ -372,12 +391,15 @@
 			reg = <2>;
 
 			camera@42 {
-				//compatible = "tvi_cam";
-				compatible = "ahd_cam";
+				compatible = "tvi_cam";
 				reg = <0x42>;
-				port {
-					camera_out2: endpoint {
-						remote-endpoint = <&deser_in2>;
+				ports {
+					#address-cells = <1>;
+					#size-cells = <0>;
+					port@0 {
+						camera_out02: endpoint {
+							remote-endpoint = <&tvi0_deser_in2>;
+						};
 					};
 				};
 			};
@@ -389,18 +411,94 @@
 			reg = <3>;
 
 			camera@43 {
-				//compatible = "tvi_cam";
-				compatible = "ahd_cam";
+				compatible = "tvi_cam";
 				reg = <0x43>;
-				port {
-					camera_out3: endpoint {
-						remote-endpoint = <&deser_in3>;
+				ports {
+					#address-cells = <1>;
+					#size-cells = <0>;
+					port@0 {
+						camera_out03: endpoint {
+							remote-endpoint = <&tvi0_deser_in3>;
+						};
 					};
 				};
 			};
 		};
 
 	};
+
+	/* tp2854 chip 1 */
+	tvi_deser@45 {
+		#address-cells = <1>;
+		#size-cells = <0>;
+		compatible = "tvi,tp2854b";
+		reg = <0x45>;
+		status = "disabled";
+		ports {
+			#address-cells = <1>;
+			#size-cells = <0>;
+
+			port@0 {
+				reg = <0>;
+				tvi1_deser_in0: endpoint {
+					remote-endpoint = <&camera_out10>;
+				};
+			};
+
+			port@1 {
+				reg = <1>;
+				tvi1_deser_in1: endpoint {
+					remote-endpoint = <&camera_out11>;
+				};
+			};
+
+			port@4 {
+				reg = <4>;
+				tvi1_deser_out0: endpoint {
+					clock-lanes = <0>;
+					data-lanes = <1 2 3 4>;
+					remote-endpoint = <&csi20_in>;
+				};
+			};
+		};
+
+		i2c@0 {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			reg = <0>;
+
+			camera@50 {
+				compatible = "ahd_cam";
+				reg = <0x50>;
+				ports {
+                    port@0 {
+                        camera_out10: endpoint {
+                            remote-endpoint = <&tvi1_deser_in0>;
+                        };
+                    };
+				};
+			};
+		};
+
+		i2c@1 {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			reg = <1>;
+
+			camera@51 {
+				compatible = "ahd_cam";
+				reg = <0x51>;
+				ports {
+                    port@0 {
+                        camera_out11: endpoint {
+                            remote-endpoint = <&tvi1_deser_in1>;
+                        };
+                    };
+				};
+			};
+		};
+	};
+
 };
 
 &vin0 {
@@ -419,6 +517,33 @@
 	status = "okay";
 };
 
+&vin4 {
+	status = "disabled";
+};
+
+&vin5 {
+	status = "disabled";
+};
+
+&csi20 {
+	status = "disabled";
+
+	ports {
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		port@0 {
+			reg = <0>;
+
+			csi20_in: endpoint {
+				clock-lanes = <0>;
+				data-lanes = <1 2>;
+				remote-endpoint = <&tvi1_deser_out0>;
+			};
+		};
+	};
+};
+
 &csi40 {
 	status = "okay";
 
@@ -432,7 +557,7 @@
 			csi40_in: endpoint {
 				clock-lanes = <0>;
 				data-lanes = <1 2 3 4>;
-				remote-endpoint = <&deser_out0>;
+				remote-endpoint = <&tvi0_deser_out0>;
 			};
 		};
 	};
