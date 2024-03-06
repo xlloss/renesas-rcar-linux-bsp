@@ -260,3 +260,7 @@
 	/delete-property/cd-gpios;
 	/delete-property/wp-gpios;
 };
+
+&du {
+	status = "disabled";
+};
