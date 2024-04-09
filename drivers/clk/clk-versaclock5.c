@@ -832,8 +832,9 @@ static int vc5_probe(struct i2c_client *client, const struct i2c_device_id *id)
 	struct vc5_driver_data *vc5;
 	struct clk_init_data init;
 	const char *parent_names[2];
-	unsigned int n, idx = 0;
+	unsigned int n, idx = 0, rd;
 	int ret;
+	const char *sode_val;
 
 	vc5 = devm_kzalloc(&client->dev, sizeof(*vc5), GFP_KERNEL);
 	if (!vc5)
@@ -855,6 +856,21 @@ static int vc5_probe(struct i2c_client *client, const struct i2c_device_id *id)
 	if (IS_ERR(vc5->regmap)) {
 		dev_err(&client->dev, "failed to allocate register map\n");
 		return PTR_ERR(vc5->regmap);
+	}
+
+	ret = device_property_read_string(&client->dev, "sdoe", &sode_val);
+	if (!ret) {
+		rd = i2c_smbus_read_byte_data(client, VC5_PRIM_SRC_SHDN);
+		if (rd >= 0) {
+			if (!strncmp (sode_val, "active_low", 10))
+				rd &= ~(VC5_PRIM_SRC_SHDN_SP);
+			else if (!strncmp (sode_val, "active_high", 11))
+				rd |= (VC5_PRIM_SRC_SHDN_SP);
+
+			ret = i2c_smbus_write_byte_data(client, VC5_PRIM_SRC_SHDN, rd);
+			if (ret)
+				pr_err("VC5_PRIM_SRC_SHDN fail %d\n", ret);
+		}
 	}
 
 	/* Register clock input mux */
